@@ -4,10 +4,14 @@
         "indent": ["error", 4, {
             "SwitchCase": 1
         }],
-        "comma-dangle":"off"
+        "comma-dangle":["error", "never"]
     },
     "globals": {
         "describe": true,
-        "it": true
+        "it": true,
+        "beforeEach": true,
+        "afterEach": true,
+        "before": true,
+        "after": true
     }
 }

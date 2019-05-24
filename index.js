@@ -122,11 +122,10 @@ export function removeCircularReferences(obj) {
  * @returns {Object}
  */
 export function bunyanToGelf(log) {
-    const ignoreFields = ['hostname', 'time', 'msg', 'name', 'level', 'v'];
+    const ignoreFields = ['msg', 'level', 'v'];
     const flattenedLog = flatten(removeCircularReferences(log));
     const gelfMsg = {
-        host: log.hostname,
-        timestamp: +new Date(log.time) / 1000,
+        time: +new Date(log.time) / 1000,
         short_message: log.msg,
         facility: log.name,
         level: mapGelfLevel(log.level),
@@ -144,7 +143,7 @@ export function bunyanToGelf(log) {
     // TODO: Improve this using `reduce`
     for (const key in flattenedLog) { // eslint-disable-line no-restricted-syntax
         if (Object.hasOwnProperty.call(flattenedLog, key)) {
-            if (ignoreFields.indexOf(key) < 0 && gelfMsg[key] === null) {
+            if (ignoreFields.indexOf(key) < 0 && !Object.hasOwnProperty.call(gelfMsg, key)) {
                 gelfMsg[key] = flattenedLog[key];
             }
         }
@@ -160,6 +159,6 @@ export function bunyanToGelf(log) {
  * @param {Object} options
  * @returns {GELFStream}
  */
-export function createBunyanStream(host, port, options = {}) {
-    return new GELFStream(host, port, { ...options, map: bunyanToGelf });
+export function createBunyanStream(options = {}) {
+    return new GELFStream({ ...options, map: bunyanToGelf });
 }
