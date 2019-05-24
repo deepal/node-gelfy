@@ -9,21 +9,36 @@ export default class GELFStream extends Writable {
      * @param {Object} options
      */
     constructor(options = {}) {
-        const DEFAULT_GELF_HOST = '127.0.0.1';
+        const defaultOptions = {
+            middleware: [],
+            adapterOptions: {
+                host: '127.0.0.1'
+            }
+        };
+
         super({ objectMode: true });
         this.options = options;
         this.client = gelfClient;
 
         // Merge GELFStream config with default config
         this.client.setConfig({
+            ...defaultOptions,
             ...options,
             adapterOptions: {
-                host: DEFAULT_GELF_HOST,
+                ...defaultOptions.adapterOptions,
                 ...options.adapterOptions
             }
         });
 
         this.once('finish', this.destroy);
+    }
+
+    /**
+     * Add middleware to transform log messages
+     * @param {Function} fn
+     */
+    middleware(fn) {
+        this.options.middleware.push(fn);
     }
 
     /**
@@ -34,9 +49,12 @@ export default class GELFStream extends Writable {
      */
     _write(chunk, encoding, callback) {
         if (!this.options.filter || this.options.filter(chunk)) {
-            const obj = this.options.map ? this.options.map(chunk) : chunk;
-            const { level } = obj;
-            this.client.message(obj, level, callback);
+            // Apply middleware to transform log chunk
+            const transformed = this.options.middleware.reduce(
+                (obj, middlewareFn) => middlewareFn(obj),
+                chunk
+            );
+            this.client.send(stringify(transformed), callback);
             return;
         }
 
@@ -122,12 +140,14 @@ export function removeCircularReferences(obj) {
  * @returns {Object}
  */
 export function bunyanToGelf(log) {
-    const ignoreFields = ['msg', 'level', 'v'];
+    const ignoreFields = ['msg', 'hostname', 'level', 'v'];
     const flattenedLog = flatten(removeCircularReferences(log));
     const gelfMsg = {
         time: +new Date(log.time) / 1000,
         short_message: log.msg,
         facility: log.name,
+        host: log.hostname,
+        bunyan_level: log.level,
         level: mapGelfLevel(log.level),
         full_message: stringify(log)
     };
@@ -160,5 +180,8 @@ export function bunyanToGelf(log) {
  * @returns {GELFStream}
  */
 export function createBunyanStream(options = {}) {
-    return new GELFStream({ ...options, map: bunyanToGelf });
+    let middleware = [bunyanToGelf];
+    if (Array.isArray(options.middleware)) middleware = middleware.concat(options.middleware);
+
+    return new GELFStream({ ...options, middleware });
 }

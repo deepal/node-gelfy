@@ -9,7 +9,7 @@ const logMessage = {
     hostname: 'mywebserver',
     pid: 212,
     level: 30,
-    msg: 'Incoming HTTP Request: GET /health',
+    msg: 'Incoming HTTP Request: GET /ping',
     time: '2019-05-24T09:46:12.126Z',
     v: 0
 };
@@ -25,22 +25,23 @@ describe('gelf exporter tests for bunyan', () => {
         sandbox.restore();
     });
 
-    it('bunyan stream should transform the bunyan logs and send in GELF format with default configs', () => {
+    it.only('bunyan stream should transform the bunyan logs and send in GELF format with default configs', () => {
         const stream = createBunyanStream();
-        const sendGelfMessage = sandbox.stub(stream.client, 'message');
+        const sendGelfMessage = sandbox.stub(stream.client, 'send');
         const streamWriteCallback = sandbox.stub();
         stream._write(logMessage, null, streamWriteCallback);
         expect(sendGelfMessage.calledOnce).to.equal(true);
-        expect(sendGelfMessage.getCall(0).args[0]).to.deep.equal({
-            name: 'web-app-1',
+        expect(sendGelfMessage.getCall(0).args[0]).to.equal(JSON.stringify({
+            time: 1558691172.126,
+            short_message: 'Incoming HTTP Request: GET /ping',
             facility: 'web-app-1',
-            environment: 'production',
-            hostname: 'mywebserver',
-            pid: 212,
+            host: 'mywebserver',
+            bunyan_level: 30,
             level: 6,
-            short_message: 'Incoming HTTP Request: GET /health',
             full_message: JSON.stringify(logMessage),
-            time: 1558691172.126
-        });
+            name: 'web-app-1',
+            environment: 'production',
+            pid: 212
+        }));
     });
 });
