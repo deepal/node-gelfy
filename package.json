@@ -1,0 +1,82 @@
+{
+  "name": "gelfy",
+  "version": "0.0.1",
+  "description": "GELF (Graylog Extended Log Format) Integrations for Node.js Logging Libraries",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "mocha --require @babel/register 'test/**/*.spec.js'",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dpjayasekara/node-gelfy.git"
+  },
+  "keywords": [
+    "node.js",
+    "bunyan",
+    "graylog",
+    "gelf",
+    "logging"
+  ],
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          },
+          "modules": "commonjs",
+          "useBuiltIns": false,
+          "debug": true
+        }
+      ]
+    ],
+    "sourceMaps": true,
+    "retainLines": true,
+    "plugins": []
+  },
+  "nyc": {
+    "extension": [
+      ".js"
+    ],
+    "include": "src/**/*.js",
+    "require": [
+      "@babel/register",
+      "source-map-support/register"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "sourceMap": true,
+    "all": true,
+    "cache": false
+  },
+  "author": "Deepal Jayasekara <dpjayasekara@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dpjayasekara/node-gelfy/issues"
+  },
+  "homepage": "https://github.com/dpjayasekara/node-gelfy#readme",
+  "dependencies": {
+    "@babel/core": "7.4.5",
+    "@babel/preset-env": "7.4.5",
+    "@babel/register": "7.4.4",
+    "chai": "4.2.0",
+    "fast-safe-stringify": "2.0.6",
+    "gelf-pro": "1.3.1",
+    "source-map-support": "0.5.12"
+  },
+  "devDependencies": {
+    "eslint": "5.16.0",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-plugin-import": "2.17.2",
+    "eslint-plugin-jsx-a11y": "6.2.1",
+    "eslint-plugin-react": "7.13.0",
+    "mocha": "6.1.4",
+    "nyc": "14.1.1",
+    "proxyquire": "2.1.0",
+    "sinon": "7.3.2"
+  }
+}
