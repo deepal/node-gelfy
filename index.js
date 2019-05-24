@@ -136,8 +136,8 @@ export function bunyanToGelf(log) {
     if (log.err && log.err.stack) {
         const errFile = log.err.stack.match(/\n\s+at .+ \(([^:]+):([0-9]+)/);
         if (errFile) {
-            if (errFile[1]) gelfMsg.file = errFile[1];
-            if (errFile[2]) gelfMsg.line = errFile[2];
+            if (errFile[1]) gelfMsg.file = errFile[1]; // eslint-disable-line prefer-destructuring
+            if (errFile[2]) gelfMsg.line = errFile[2]; // eslint-disable-line prefer-destructuring
         }
     }
 

@@ -18,7 +18,8 @@ describe('flatten function test suite', () => {
                     }
                 }
             }
-        }
+        };
+
         const out = flatten(source);
         expect(out).to.deep.equal({
             a: 1,
