@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --require @babel/register 'test/**/*.spec.js'",
     "lint": "eslint .",
-    "build": "concurrently \"npm run lint\" \"npm test\" && babel ./index.js --out-dir ./build"
+    "build": "concurrently \"npm run lint\" \"npm test\" && babel ./src --out-dir ./build"
   },
   "repository": {
     "type": "git",

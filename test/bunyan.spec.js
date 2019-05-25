@@ -1,7 +1,7 @@
 /* eslint-disable prefer-arrow-callback,func-names,no-underscore-dangle */
 import sinon from 'sinon';
 import { expect } from 'chai';
-import { createBunyanStream } from '../index';
+import { createBunyanStream } from '../src';
 
 const logMessage = {
     name: 'web-app-1',
@@ -25,9 +25,9 @@ describe('gelf exporter tests for bunyan', () => {
         sandbox.restore();
     });
 
-    it.only('bunyan stream should transform the bunyan logs and send in GELF format with default configs', () => {
+    it('bunyan stream should transform the bunyan logs and send in GELF format with default configs', () => {
         const stream = createBunyanStream();
-        const sendGelfMessage = sandbox.stub(stream.client, 'send');
+        const sendGelfMessage = sandbox.stub(stream.client, 'message');
         const streamWriteCallback = sandbox.stub();
         stream._write(logMessage, null, streamWriteCallback);
         expect(sendGelfMessage.calledOnce).to.equal(true);
@@ -38,10 +38,10 @@ describe('gelf exporter tests for bunyan', () => {
             host: 'mywebserver',
             bunyan_level: 30,
             level: 6,
-            full_message: JSON.stringify(logMessage),
             name: 'web-app-1',
             environment: 'production',
-            pid: 212
+            pid: 212,
+            full_message: JSON.stringify(logMessage)
         }));
     });
 });

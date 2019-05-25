@@ -1,6 +1,6 @@
 /* eslint-disable prefer-arrow-callback, func-names */
 import { expect } from 'chai';
-import { flatten } from '../index';
+import { flatten } from '../src';
 
 describe('flatten function test suite', () => {
     it('should return a flatten object when a deep-nested object is provided', function () {
