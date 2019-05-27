@@ -5,7 +5,6 @@ import { Writable } from 'stream';
 import BunyanAdapter from './adapters/bunyan';
 
 export function formatOptions(rawOpts = {}) {
-    // TODO: !!!!!! BROKEN !!!!
     const normalizedIPFamily = +String.prototype.replace.call((rawOpts.family || ''), 'ipv', '') || 4;
     const includeFullMessage = Object.hasOwnProperty.call(rawOpts, 'includeFullMessage')
         ? rawOpts.includeFullMessage
@@ -75,16 +74,16 @@ export default class GELFStream extends Writable {
     /**
      * Create an instance of GELFStream object
      * @param {Object} options
-     * @param {Object} options.host
-     * @param {Object} options.port
+     * @param {string} options.host
+     * @param {number} options.port
      * @param {Object} options.defaultFields
-     * @param {Object} options.protocol
-     * @param {Object} options.family
-     * @param {Object} options.tlsCert
-     * @param {Object} options.tlsKey
-     * @param {Object} options.tlsCA
-     * @param {Object} options.middleware
-     * @param {Object} options.includeFullMessage
+     * @param {string} options.protocol
+     * @param {string|number} options.family
+     * @param {string} options.tlsCert
+     * @param {string} options.tlsKey
+     * @param {Array.<string>} options.tlsCA
+     * @param {Function} options.middleware
+     * @param {bool} options.includeFullMessage
      */
     constructor(options = {}) {
         super({ objectMode: true });
