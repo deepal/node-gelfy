@@ -1,6 +1,6 @@
 {
   "name": "gelfy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GELF (Graylog Extended Log Format) Integrations for Node.js Logging Libraries",
   "main": "build/index.js",
   "scripts": {
