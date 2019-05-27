@@ -126,21 +126,21 @@ Numeric value denoting ipv4 or ipv6. Possible values are `4`, `6`. Alternatively
 ##### options.tlsCert
 >type: string
 
-Client certificate for TLS. Required only if [protocol](#options.protocol) is set to `tcp-tls` and server requires client certificate authentication.
+Client certificate for TLS. Required only if [protocol](#optionsprotocol) is set to `tcp-tls` and server requires client certificate authentication.
 
 _See more: [https://nodejs.org/api/tls.html#tls_tls_connect_options_callback](https://nodejs.org/api/tls.html#tls_tls_connect_options_callback)_
 
 ##### options.tlsKey
 >type: string
 
-Client key for TLS communication. Required only if [protocol](#options.protocol) is set to `tcp-tls` and server requires client certificate authentication.
+Client key for TLS communication. Required only if [protocol](#optionsprotocol) is set to `tcp-tls` and server requires client certificate authentication.
 
 _See more: [https://nodejs.org/api/tls.html#tls_tls_connect_options_callback](https://nodejs.org/api/tls.html#tls_tls_connect_options_callback)_
 
 ##### options.tlsCA
 >type: Array<string>
 
-Server certificate for TLS communication. Required only if [protocol](#options.protocol) is set to `tcp-tls` and the server uses a self-signed certificate.
+Server certificate for TLS communication. Required only if [protocol](#optionsprotocol) is set to `tcp-tls` and the server uses a self-signed certificate.
 
 _See more: [https://nodejs.org/api/tls.html#tls_tls_connect_options_callback](https://nodejs.org/api/tls.html#tls_tls_connect_options_callback)_
 
@@ -179,7 +179,7 @@ Add middleware to for parsing JSON log messages before writing to the GELF Strea
 
 GELF Stream Middleware is a function which can process log messages immediately before they were written into the GELF Stream. If you write your own integration with an arbitrary log library, you can define how the log messages are parsed to the GELF format using middleware. 
 
-Built-in adapters such as Bunyan come with a pre-included middleware which converts a Bunyan JSON log message into a GELF Payload. See [gelfy.createBunyanStream](#gelfy.createbunyanstream) for more details.
+Built-in adapters such as Bunyan come with a pre-included middleware which converts a Bunyan JSON log message into a GELF Payload. See [gelfy.createBunyanStream](#gelfycreatebunyanstream) for more details.
 
 ```js
 const gelfy = require('gelfy');
