@@ -1,13 +1,13 @@
 ## Gelfy
 
-[![Build Status](https://travis-ci.org/dpjayasekara/node-gelfy.svg?branch=master)](https://travis-ci.org/dpjayasekara/node-gelfy) [![Coverage Status](https://coveralls.io/repos/github/dpjayasekara/node-gelfy/badge.svg?branch=master)](https://coveralls.io/github/dpjayasekara/node-gelfy?branch=master)
+[![Build Status](https://travis-ci.org/dpjayasekara/node-gelfy.svg?branch=master)](https://travis-ci.org/dpjayasekara/node-gelfy) [![Coverage Status](https://coveralls.io/repos/github/dpjayasekara/node-gelfy/badge.svg?branch=master)](https://coveralls.io/github/dpjayasekara/node-gelfy?branch=master) [![Version](https://img.shields.io/npm/v/gelfy.svg?label=version)](https://www.npmjs.com/package/gelfy)
 
-A one-stop library for publishing application logs in GELF format(Graylog Extended Log Format) to Graylog. A modified version of [gelf-stream](https://github.com/mhart/gelf-stream/blob/master/gelf-stream.js) module for reliability and customizability for any logging library which supports writing to object streams.
+A customizable library for publishing application logs in GELF format(Graylog Extended Log Format) to Graylog. A modified version of [gelf-stream](https://github.com/mhart/gelf-stream/blob/master/gelf-stream.js) module for reliability and customizability for any logging library which supports writing to object streams. 
 
 Why Gelfy?
 
 - Logs can be directly pushed to a Graylog instance from the Node.js application
-- Can be integrated directly into your logging library (Winston/Bunyan) as a Winston transporter or a Bunyan stream
+- Can be integrated directly into your logging library (Built-in integration with Bunyan, customizable for any logging library which supports JSON streams/transports)
 - Supports GELF UDP, TCP, and TCP with TLS.
 - Supports objects with circular references
 
