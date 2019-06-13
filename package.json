@@ -4,7 +4,7 @@
   "description": "GELF (Graylog Extended Log Format) Integrations for Node.js Logging Libraries",
   "main": "build/index.js",
   "scripts": {
-    "test": "nyc mocha --require @babel/register 'test/**/*.spec.js'",
+    "test": "nyc mocha --require @babel/register 'test/**/*.spec.js' | coveralls",
     "lint": "eslint .",
     "build": "concurrently \"npm run lint\" \"npm test\" && babel ./src --out-dir ./build"
   },
@@ -54,8 +54,7 @@
       "source-map-support/register"
     ],
     "reporter": [
-      "lcov",
-      "text-summary"
+      "text-lcov"
     ],
     "sourceMap": true,
     "all": true,
@@ -84,6 +83,7 @@
   ],
   "devDependencies": {
     "concurrently": "4.1.0",
+    "coveralls": "3.0.4",
     "eslint": "5.16.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-plugin-import": "2.17.2",
