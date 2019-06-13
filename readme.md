@@ -1,5 +1,7 @@
 ## Gelfy
 
+[![Build Status](https://travis-ci.org/dpjayasekara/node-gelfy.svg?branch=master)](https://travis-ci.org/dpjayasekara/node-gelfy) [![Coverage Status](https://coveralls.io/repos/github/dpjayasekara/node-gelfy/badge.svg?branch=master)](https://coveralls.io/github/dpjayasekara/node-gelfy?branch=master)
+
 A one-stop library for publishing application logs in GELF format(Graylog Extended Log Format) to Graylog. A modified version of [gelf-stream](https://github.com/mhart/gelf-stream/blob/master/gelf-stream.js) module for reliability and customizability for any logging library which supports writing to object streams.
 
 Why Gelfy?
