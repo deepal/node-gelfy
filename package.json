@@ -4,9 +4,10 @@
   "description": "GELF (Graylog Extended Log Format) Integrations for Node.js Logging Libraries",
   "main": "build/index.js",
   "scripts": {
-    "test": "nyc mocha --require @babel/register 'test/**/*.spec.js' | coveralls",
+    "test": "nyc mocha --require @babel/register 'test/**/*.spec.js'",
+    "test:coverall": "npm test | coveralls",
     "lint": "eslint .",
-    "build": "concurrently \"npm run lint\" \"npm test\" && babel ./src --out-dir ./build"
+    "build": "concurrently \"npm run lint\" \"npm run test:coverall\" && babel ./src --out-dir ./build"
   },
   "repository": {
     "type": "git",
@@ -54,7 +55,9 @@
       "source-map-support/register"
     ],
     "reporter": [
-      "text-lcov"
+      "text-lcov",
+      "lcov",
+      "text-summary"
     ],
     "sourceMap": true,
     "all": true,

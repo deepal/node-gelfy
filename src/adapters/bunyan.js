@@ -25,7 +25,7 @@ export default class BunyanAdapter {
 
     createTransformer() {
         return (log) => {
-            const ignoreFields = ['msg', 'hostname', 'level', 'v'];
+            const ignoreFields = ['msg', 'hostname', 'v'];
             const gelfMsg = {
                 time: +new Date(log.time) / 1000,
                 short_message: log.msg,
@@ -38,8 +38,8 @@ export default class BunyanAdapter {
             if (log.err && log.err.stack) {
                 const errFile = log.err.stack.match(/\n\s+at .+ \(([^:]+):([0-9]+)/);
                 if (errFile) {
-                    if (errFile[1]) gelfMsg.file = errFile[1]; // eslint-disable-line prefer-destructuring
-                    if (errFile[2]) gelfMsg.line = errFile[2]; // eslint-disable-line prefer-destructuring
+                    if (typeof errFile[1] === 'string' && errFile[1].trim()) gelfMsg.file = errFile[1]; // eslint-disable-line prefer-destructuring
+                    if (typeof errFile[2] === 'string' && errFile[1].trim()) gelfMsg.line = errFile[2]; // eslint-disable-line prefer-destructuring
                 }
             }
 

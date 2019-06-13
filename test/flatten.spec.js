@@ -29,4 +29,18 @@ describe('flatten function test suite', () => {
             'b.d.f.h': regex
         });
     });
+
+    it('should not attempt to flatten any properties which are not own properties of the source object', function () {
+        const parent = {
+            a: 1
+        };
+
+        const child = Object.create(parent);
+        child.b = 2;
+
+        const out = flatten(child);
+        expect(out).to.deep.equal({
+            b: 2
+        });
+    });
 });
