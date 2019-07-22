@@ -46,7 +46,7 @@ describe('Gelf stream tests', () => {
 
     it('should send all the written log messages the stream to the graylog server via the gelf client', function () {
         const gelfClient = {
-            message: sandbox.stub(),
+            send: sandbox.stub(),
             setConfig: sandbox.stub()
         };
 
@@ -78,12 +78,12 @@ describe('Gelf stream tests', () => {
         };
 
         stream.write(message1);
-        expect(gelfClient.message.withArgs({
+        expect(gelfClient.send.withArgs({
             message: 'this is test 1',
             full_message: JSON.stringify(message1)
         }));
         stream.write(message2);
-        expect(gelfClient.message.withArgs({
+        expect(gelfClient.send.withArgs({
             message: 'this is test 2',
             full_message: JSON.stringify(message2)
         }));
@@ -91,7 +91,7 @@ describe('Gelf stream tests', () => {
 
     it('should not include the stringified json messages in the sent gelf log if includeFullMessage is set to false', function () {
         const gelfClient = {
-            message: sandbox.stub(),
+            send: sandbox.stub(),
             setConfig: sandbox.stub()
         };
 
@@ -107,14 +107,14 @@ describe('Gelf stream tests', () => {
         };
 
         stream.write(message);
-        expect(gelfClient.message.withArgs({
+        expect(gelfClient.send.withArgs({
             message: 'this is test 1'
         }));
     });
 
     it('log message should be transformed after processing with each middleware configured', function () {
         const gelfClient = {
-            message: sandbox.stub(),
+            send: sandbox.stub(),
             setConfig: sandbox.stub()
         };
 
@@ -137,7 +137,7 @@ describe('Gelf stream tests', () => {
         stream.write(message);
         expect(middleware1.withArgs(message).calledOnce).to.equal(true);
         expect(middleware2.withArgs(transformedMessage1).calledOnce).to.equal(true);
-        expect(gelfClient.message.withArgs('{"msg":"THIS IS A TEST","v":2}').calledOnce).to.equal(true);
+        expect(gelfClient.send.withArgs('{"msg":"THIS IS A TEST","v":2}').calledOnce).to.equal(true);
     });
 
     it('should asynchronously close the stream if destroy is called with a callback', function (done) {
@@ -164,7 +164,7 @@ describe('Gelf stream tests', () => {
 
     it('should create a gelf stream with bunyan transform middleware configured when createBunyanStream() is called', function () {
         const gelfClient = require('gelf-pro'); // eslint-disable-line global-require
-        const gelfMsgStub = sandbox.stub(gelfClient, 'message');
+        const gelfMsgStub = sandbox.stub(gelfClient, 'send');
 
         const logMsg = {
             name: 'my-app',

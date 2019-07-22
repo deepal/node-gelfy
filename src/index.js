@@ -125,7 +125,7 @@ export default class GELFStream extends Writable {
             transformed.full_message = stringify(chunk);
         }
 
-        this.client.message(stringify(transformed), callback);
+        this.client.send(stringify(transformed), callback);
     }
 
     /**
