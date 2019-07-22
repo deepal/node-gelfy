@@ -27,7 +27,7 @@ describe('gelf exporter tests for bunyan', () => {
 
     it('bunyan stream should transform the bunyan logs and send in GELF format with default configs', () => {
         const stream = createBunyanStream();
-        const sendGelfMessage = sandbox.stub(stream.client, 'message');
+        const sendGelfMessage = sandbox.stub(stream.client, 'send');
         const streamWriteCallback = sandbox.stub();
         stream._write(logMessage, null, streamWriteCallback);
         expect(sendGelfMessage.calledOnce).to.equal(true);
