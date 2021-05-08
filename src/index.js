@@ -1,4 +1,4 @@
-/* eslint-disable func-style */
+/* eslint-disable func-style,no-underscore-dangle */
 import gelfClient from 'gelf-pro';
 import stringify from 'fast-safe-stringify';
 import { Writable } from 'stream';
@@ -110,7 +110,7 @@ export default class GELFStream extends Writable {
      * @param {string} encoding
      * @param {Function} callback
      */
-    _write(chunk, encoding, callback) {
+    _write(chunk, encoding, callback) { // eslint-ignore-line
         const flattenedLog = flatten(removeCircularReferences(chunk));
         // Apply middleware to transform log chunk
         const transformed = this.options.middleware.reduce(
