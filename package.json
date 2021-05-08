@@ -1,6 +1,6 @@
 {
   "name": "gelfy",
-  "version": "2.0.2",
+  "version": "2.0.0",
   "description": "GELF (Graylog Extended Log Format) Integrations for Node.js Logging Libraries",
   "main": "build/index.js",
   "scripts": {
@@ -11,7 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dpjayasekara/node-gelfy.git"
+    "url": "git+https://github.com/deepal/node-gelfy.git"
+  },
+  "engines": {
+    "node": ">=10"
   },
   "keywords": [
     "node.js",
@@ -66,9 +69,9 @@
   "author": "Deepal Jayasekara <dpjayasekara@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dpjayasekara/node-gelfy/issues"
+    "url": "https://github.com/deepal/node-gelfy/issues"
   },
-  "homepage": "https://github.com/dpjayasekara/node-gelfy#readme",
+  "homepage": "https://github.com/deepal/node-gelfy#readme",
   "dependencies": {
     "chai": "4.2.0",
     "fast-safe-stringify": "2.0.6",
