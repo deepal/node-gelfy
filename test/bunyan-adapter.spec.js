@@ -1,6 +1,5 @@
-/* eslint-disable prefer-arrow-callback,func-names */
 import { expect } from 'chai';
-import BunyanAdapter from '../src/adapters/bunyan';
+import BunyanAdapter from '../src/adapters/bunyan.js';
 
 const adapter = new BunyanAdapter({
     client: {
@@ -16,8 +15,8 @@ const adapter = new BunyanAdapter({
     }
 });
 
-describe('bunyan adapter tests', function () {
-    it('should map bunyan log level to the corresponding gelf log level', function () {
+describe('bunyan adapter tests', () => {
+    it('should map bunyan log level to the corresponding gelf log level', () => {
         expect(adapter.mapGelfLevel(10)).to.equal(0);
         expect(adapter.mapGelfLevel(20)).to.equal(0);
         expect(adapter.mapGelfLevel(30)).to.equal(1);
@@ -27,7 +26,7 @@ describe('bunyan adapter tests', function () {
         expect(adapter.mapGelfLevel(100)).to.equal(2);
     });
 
-    it('should return a transformer function which converts bunyan log to the gelf-compliant message', function () {
+    it('should return a transformer function which converts bunyan log to the gelf-compliant message', () => {
         const transform = adapter.createTransformer();
         const logMsg = {
             name: 'my-app',
@@ -57,7 +56,7 @@ describe('bunyan adapter tests', function () {
         expect(gelfMsg.v).to.equal(undefined);
     });
 
-    it('should include the errored file and line if the log message contains an err object', function () {
+    it('should include the errored file and line if the log message contains an err object', () => {
         const transform = adapter.createTransformer();
         const err = new Error();
         err.stack = `Error: 
@@ -79,7 +78,7 @@ describe('bunyan adapter tests', function () {
         expect(gelfMsg.line).to.equal('10');
     });
 
-    it('should not include the error file and line if the error stack could not be parsed properly', function () {
+    it('should not include the error file and line if the error stack could not be parsed properly', () => {
         const transform = adapter.createTransformer();
         const err = new Error();
         err.stack = 'some unparsable stack';
@@ -100,7 +99,7 @@ describe('bunyan adapter tests', function () {
         expect(gelfMsg.line).to.equal(undefined);
     });
 
-    it('should not include the error file or line if the error file or line could not be extracted from the error stack', function () {
+    it('should not include the error file or line if the error file or line could not be extracted from the error stack', () => {
         const transform = adapter.createTransformer();
         const err = new Error();
         err.stack = `Error: 
@@ -122,7 +121,7 @@ describe('bunyan adapter tests', function () {
         expect(gelfMsg.line).to.equal(undefined);
     });
 
-    it('should only include own properties of the original log message in the transformed gelf message', function () {
+    it('should only include own properties of the original log message in the transformed gelf message', () => {
         const parentLog = {
             some_field_from_parent: 'test123'
         };

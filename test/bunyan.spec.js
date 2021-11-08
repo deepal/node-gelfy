@@ -1,7 +1,6 @@
-/* eslint-disable prefer-arrow-callback,func-names,no-underscore-dangle */
 import sinon from 'sinon';
 import { expect } from 'chai';
-import { createBunyanStream } from '../src';
+import { createBunyanStream } from '../src/index.js';
 
 const logMessage = {
     name: 'web-app-1',
@@ -17,11 +16,11 @@ const logMessage = {
 let sandbox;
 
 describe('gelf exporter tests for bunyan', () => {
-    beforeEach(function () {
+    beforeEach(() => {
         sandbox = sinon.createSandbox();
     });
 
-    afterEach(function () {
+    afterEach(() => {
         sandbox.restore();
     });
 

@@ -1,9 +1,8 @@
-/* eslint-disable prefer-arrow-callback, func-names */
 import { expect } from 'chai';
-import { flatten } from '../src';
+import { flatten } from '../src/index.js';
 
 describe('flatten function test suite', () => {
-    it('should return a flatten object when a deep-nested object is provided', function () {
+    it('should return a flatten object when a deep-nested object is provided', () => {
         const date = new Date();
         const regex = /.+/;
         const source = {
@@ -30,7 +29,7 @@ describe('flatten function test suite', () => {
         });
     });
 
-    it('should not attempt to flatten any properties which are not own properties of the source object', function () {
+    it('should not attempt to flatten any properties which are not own properties of the source object', () => {
         const parent = {
             a: 1
         };
