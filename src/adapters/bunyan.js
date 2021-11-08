@@ -24,10 +24,10 @@ export default class BunyanAdapter {
     }
 
     createTransformer() {
-        return (log) => {
+        return log => {
             const ignoreFields = ['msg', 'hostname', 'v'];
             const gelfMsg = {
-                time: +new Date(log.time) / 1000,
+                time: Number(new Date(log.time)) / 1000,
                 short_message: log.msg,
                 facility: log.name,
                 host: log.hostname,
@@ -38,17 +38,14 @@ export default class BunyanAdapter {
             if (log.err && log.err.stack) {
                 const errFile = log.err.stack.match(/\n\s+at .+ \(([^:]+):([0-9]+)/);
                 if (errFile) {
-                    if (typeof errFile[1] === 'string' && errFile[1].trim()) gelfMsg.file = errFile[1]; // eslint-disable-line prefer-destructuring
-                    if (typeof errFile[2] === 'string' && errFile[1].trim()) gelfMsg.line = errFile[2]; // eslint-disable-line prefer-destructuring
+                    if (typeof errFile[1] === 'string' && errFile[1].trim()) gelfMsg.file = errFile[1];
+                    if (typeof errFile[2] === 'string' && errFile[1].trim()) gelfMsg.line = errFile[2];
                 }
             }
 
-            // TODO: Improve this using `reduce`
-            for (const key in log) { // eslint-disable-line no-restricted-syntax
-                if (Object.hasOwnProperty.call(log, key)) {
-                    if (ignoreFields.indexOf(key) < 0 && !Object.hasOwnProperty.call(gelfMsg, key)) {
-                        gelfMsg[key] = log[key];
-                    }
+            for (const [key, value] of Object.entries(log)) {
+                if (ignoreFields.includes(key) === false && !Object.hasOwnProperty.call(gelfMsg, key)) {
+                    gelfMsg[key] = value;
                 }
             }
 

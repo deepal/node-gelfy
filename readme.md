@@ -1,6 +1,16 @@
 ## Gelfy
 
-[![Build Status](https://travis-ci.org/deepal/node-gelfy.svg?branch=master)](https://travis-ci.org/deepal/node-gelfy) [![Coverage Status](https://coveralls.io/repos/github/deepal/node-gelfy/badge.svg?branch=master)](https://coveralls.io/github/deepal/node-gelfy?branch=master) [![Version](https://img.shields.io/npm/v/gelfy.svg)](https://www.npmjs.com/package/gelfy)
+[![NPM version][npm-img]][npm]
+[![Node.js CI][ci-img]][ci]
+[![Coverage Status][coveralls-img]][coveralls]
+
+[npm-img]:         https://img.shields.io/npm/v/gelfy.svg
+[npm]:             https://www.npmjs.com/package/gelfy
+[ci-img]:          https://github.com/deepal/node-gelfy/actions/workflows/nodejs.yml/badge.svg
+[ci]:              https://github.com/deepal/node-gelfy/actions/workflows/nodejs.yml
+[coveralls-img]:   https://coveralls.io/repos/github/deepal/node-gelfy/badge.svg?branch=master
+[coveralls]:       https://coveralls.io/github/deepal/node-gelfy?branch=master
+
 
 A customizable library for publishing application logs in GELF format(Graylog Extended Log Format) to Graylog. A modified version of [gelf-stream](https://github.com/mhart/gelf-stream/blob/master/gelf-stream.js) module for reliability and customizability for any logging library which supports writing to object streams. 
 
@@ -26,12 +36,12 @@ npm i gelfy
 ### With Bunyan logger
 
 ```js
-const gelfy = require('gelfy');
-const bunyan = require('bunyan');
+import gelfy from 'gelfy';
+import bunyan from 'bunyan';
 
 // See 'options' in API section for all available options
 const options = {
- host: '127.0.0.1'
+    host: '127.0.0.1'
 }
 
 const bunyanStream = gelfy.createBunyanStream(options);
@@ -53,11 +63,11 @@ logger.info('sample message'); // will be sent to graylog server at 127.0.0.1
 Gelfy also has a generic object stream which you can plug into any logging library as a transporter/stream.
 
 ```js
-const gelfy = require('gelfy');
+import gelfy from 'gelfy';
 
 // See 'options' in API section for all available options
 const options = {
- host: '127.0.0.1'
+    host: '127.0.0.1'
 }
 
 const yourLogMessage = {
@@ -184,7 +194,7 @@ GELF Stream Middleware is a function which can process log messages immediately 
 Built-in adapters such as Bunyan come with a pre-included middleware which converts a Bunyan JSON log message into a GELF Payload. See [gelfy.createBunyanStream](#gelfycreatebunyanstream) for more details.
 
 ```js
-const gelfy = require('gelfy');
+import gelfy from 'gelfy';
 const stream = gelfy.create(); // create a GELF stream with default options
 
 const middleware1 = (log) => ({

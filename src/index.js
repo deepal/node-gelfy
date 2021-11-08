@@ -1,11 +1,10 @@
-/* eslint-disable func-style,no-underscore-dangle */
 import gelfClient from 'gelf-pro';
 import stringify from 'fast-safe-stringify';
 import { Writable } from 'stream';
-import BunyanAdapter from './adapters/bunyan';
+import BunyanAdapter from './adapters/bunyan.js';
 
 export function formatOptions(rawOpts = {}) {
-    const normalizedIPFamily = +String.prototype.replace.call((rawOpts.family || ''), 'ipv', '') || 4;
+    const normalizedIPFamily = Number(String.prototype.replace.call((rawOpts.family || ''), 'ipv', '')) || 4;
     const includeFullMessage = Object.hasOwnProperty.call(rawOpts, 'includeFullMessage')
         ? rawOpts.includeFullMessage
         : true;
@@ -46,16 +45,11 @@ export function formatOptions(rawOpts = {}) {
  * @returns {Object}
  */
 export function flatten(obj, into = {}, prefix = '', sep = '.') {
-    let key;
-    let prop;
-    for (key in obj) { // eslint-disable-line no-restricted-syntax
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            prop = obj[key];
-            if (typeof prop === 'object' && !(prop instanceof Date) && !(prop instanceof RegExp)) {
-                flatten(prop, into, prefix + key + sep, sep);
-            } else {
-                into[prefix + key] = prop; // eslint-disable-line no-param-reassign
-            }
+    for (const [key, prop] of Object.entries(obj)) {
+        if (typeof prop === 'object' && !(prop instanceof Date) && !(prop instanceof RegExp)) {
+            flatten(prop, into, prefix + key + sep, sep);
+        } else {
+            into[prefix + key] = prop;
         }
     }
     return into;
