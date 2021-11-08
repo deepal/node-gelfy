@@ -1,9 +1,8 @@
-/* eslint-disable prefer-arrow-callback, func-names */
 import { expect } from 'chai';
-import { formatOptions } from '../src';
+import { formatOptions } from '../src/index.js';
 
-describe('formatOptions function tests', function () {
-    it('should return a formatted options object with default values if no options were provided', function () {
+describe('formatOptions function tests', () => {
+    it('should return a formatted options object with default values if no options were provided', () => {
         const out = formatOptions();
         expect(out).to.deep.equal({
             fields: {},
@@ -19,7 +18,7 @@ describe('formatOptions function tests', function () {
         });
     });
 
-    it('should return a formatted options object merged with provided options with default values', function () {
+    it('should return a formatted options object merged with provided options with default values', () => {
         const middleware = [() => {}, () => {}];
         const out = formatOptions({
             defaultFields: {
@@ -50,7 +49,7 @@ describe('formatOptions function tests', function () {
         });
     });
 
-    it('should properly format tls configuration', function () {
+    it('should properly format tls configuration', () => {
         const out = formatOptions({
             defaultFields: {
                 app: 'myapp'

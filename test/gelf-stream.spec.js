@@ -1,21 +1,32 @@
-/* eslint-disable prefer-arrow-callback, func-names */
 import { expect } from 'chai';
-import sinon from 'sinon';
-import proxyquire from 'proxyquire';
-import GELFStream, { create } from '../src/index';
+import { createSandbox } from 'sinon';
+import gelfClient from 'gelf-pro';
+import GELFStream, { create, createBunyanStream } from '../src/index.js';
 
 let sandbox;
 
+function createGELFStream(gelfClient) {
+    class MockedGelfStream extends GELFStream {
+        constructor(options = {}) {
+            super(options);
+            this.client = gelfClient;
+            this.client.setConfig(this.options);
+            this.once('finish', this.destroy);
+        }
+    }
+    return MockedGelfStream;
+}
+
 describe('Gelf stream tests', () => {
-    beforeEach(function () {
-        sandbox = sinon.createSandbox();
+    beforeEach(() => {
+        sandbox = createSandbox();
     });
 
-    afterEach(function () {
+    afterEach(() => {
         sandbox.restore();
     });
 
-    it('should use default options object if no options provided for constructor', function () {
+    it('should use default options object if no options provided for constructor', () => {
         const stream = new GELFStream();
         expect(stream.options).to.eql({
             adapterName: 'udp',
@@ -31,7 +42,7 @@ describe('Gelf stream tests', () => {
         });
     });
 
-    it('should add a provided middleware to the middleware list when .middleware() is called with a function', function () {
+    it('should add a provided middleware to the middleware list when .middleware() is called with a function', () => {
         const stream = new GELFStream();
         const myFunc1 = () => {};
         const myFunc2 = () => {};
@@ -44,15 +55,13 @@ describe('Gelf stream tests', () => {
         expect(stream.options.middleware[1]).to.eql(myFunc2);
     });
 
-    it('should send all the written log messages the stream to the graylog server via the gelf client', function () {
+    it('should send all the written log messages the stream to the graylog server via the gelf client', () => {
         const gelfClient = {
             send: sandbox.stub(),
             setConfig: sandbox.stub()
         };
 
-        const MockedGelfStream = proxyquire.noCallThru().load('../src/index', {
-            'gelf-pro': gelfClient
-        }).default;
+        const MockedGelfStream = createGELFStream(gelfClient);
 
         const stream = new MockedGelfStream();
         expect(gelfClient.setConfig.calledOnce).to.equal(true);
@@ -89,15 +98,13 @@ describe('Gelf stream tests', () => {
         }));
     });
 
-    it('should not include the stringified json messages in the sent gelf log if includeFullMessage is set to false', function () {
+    it('should not include the stringified json messages in the sent gelf log if includeFullMessage is set to false', () => {
         const gelfClient = {
             send: sandbox.stub(),
             setConfig: sandbox.stub()
         };
 
-        const MockedGelfStream = proxyquire.noCallThru().load('../src/index', {
-            'gelf-pro': gelfClient
-        }).default;
+        const MockedGelfStream = createGELFStream(gelfClient);
 
         const stream = new MockedGelfStream({
             includeFullMessage: false
@@ -112,7 +119,7 @@ describe('Gelf stream tests', () => {
         }));
     });
 
-    it('log message should be transformed after processing with each middleware configured', function () {
+    it('log message should be transformed after processing with each middleware configured', () => {
         const gelfClient = {
             send: sandbox.stub(),
             setConfig: sandbox.stub()
@@ -125,9 +132,7 @@ describe('Gelf stream tests', () => {
         const middleware1 = sandbox.stub().returns(transformedMessage1);
         const middleware2 = sandbox.stub().returns(transformedMessage2);
 
-        const MockedGelfStream = proxyquire.noCallThru().load('../src/index', {
-            'gelf-pro': gelfClient
-        }).default;
+        const MockedGelfStream = createGELFStream(gelfClient);
 
         const stream = new MockedGelfStream({
             includeFullMessage: false,
@@ -140,7 +145,7 @@ describe('Gelf stream tests', () => {
         expect(gelfClient.send.withArgs('{"msg":"THIS IS A TEST","v":2}').calledOnce).to.equal(true);
     });
 
-    it('should asynchronously close the stream if destroy is called with a callback', function (done) {
+    it('should asynchronously close the stream if destroy is called with a callback', done => {
         const stream = new GELFStream();
         const cb = sandbox.stub();
 
@@ -151,19 +156,18 @@ describe('Gelf stream tests', () => {
         });
     });
 
-    it('should not add a \'close\' event callback if a callback not provided for .destroy() function', function () {
+    it('should not add a \'close\' event callback if a callback not provided for .destroy() function', () => {
         const stream = new GELFStream();
         stream.destroy();
-        expect(stream._events.close).to.equal(undefined); // eslint-disable-line no-underscore-dangle
+        expect(stream._events.close).to.equal(undefined);
     });
 
-    it('should return a new instance of GELFStream if create() exported function is called', function () {
+    it('should return a new instance of GELFStream if create() exported function is called', () => {
         const out = create();
         expect(out).to.be.instanceOf(GELFStream);
     });
 
-    it('should create a gelf stream with bunyan transform middleware configured when createBunyanStream() is called', function () {
-        const gelfClient = require('gelf-pro'); // eslint-disable-line global-require
+    it('should create a gelf stream with bunyan transform middleware configured when createBunyanStream() is called', () => {
         const gelfMsgStub = sandbox.stub(gelfClient, 'send');
 
         const logMsg = {
@@ -176,10 +180,6 @@ describe('Gelf stream tests', () => {
             time: '2019-02-22T16:01:06.179Z',
             v: 0
         };
-
-        const { createBunyanStream } = proxyquire('../src/index', {
-            'gelf-pro': gelfClient
-        });
 
         const stream = createBunyanStream();
         expect(stream.options.middleware).to.be.instanceOf(Array).lengthOf(1);
