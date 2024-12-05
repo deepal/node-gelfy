@@ -73,7 +73,7 @@
   },
   "homepage": "https://github.com/deepal/node-gelfy#readme",
   "dependencies": {
-    "chai": "4.2.0",
+    "chai": "4.5.0",
     "fast-safe-stringify": "2.0.6",
     "gelf-pro": "1.3.5"
   },
